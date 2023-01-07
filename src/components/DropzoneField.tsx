@@ -41,8 +41,6 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
               value={value}
               {...rest}
             />
-            {/* <DropzoneInput onChange={onChange} onBlur={onBlur} value={value} {...rest} /> */}
-            {/* <DropzoneInput onChange={(e: any) => onChange(e.target.files[0])} {...rest} /> */}
             {errors[name] && (
               <FormHelperText error>{(errors as any)[name]}</FormHelperText>
             )}
