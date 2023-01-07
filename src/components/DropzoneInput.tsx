@@ -95,11 +95,6 @@ const DropzoneInput: FC<Props> = ({
     isDragReject
   } = useDropzone({
     onDrop,
-    // maxSize,
-    // accept: {
-    //   // 'image/jpeg': [],
-    //   // "image/png": []
-    // },
     ...rest
   });
 
@@ -135,7 +130,7 @@ const DropzoneInput: FC<Props> = ({
                 variant="body2"
                 sx={{ color: !!error ? theme.palette.error.main : grey[600] }}
               >
-                {error || "or drag and drop to upload"}
+                or drag and drop to upload
               </Typography>
             </Box>
           </Stack>

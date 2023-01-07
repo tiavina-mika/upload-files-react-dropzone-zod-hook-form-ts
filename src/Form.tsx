@@ -4,9 +4,29 @@ import * as z from "zod";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
 import { getFileFromUrl } from "./utils/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const ACCEPTED_IMAGE_TYPES = ["png"];
+const MAX_SIZE = 10000;
+
+const extensionsToMimeType = (extensions: string[]): Record<string, any> => {
+  const mimeTypes: Record<string, any> = {};
+  extensions.forEach((extension) => {
+    mimeTypes["image/" + extension] = [];
+  });
+
+  return mimeTypes;
+};
 
 const schema = z.object({
-  content: z.string().min(1, "Content required")
+  image: z
+    .any()
+    .refine((files) => files?.length < 1, "Image is required.")
+    // .refine((files) => files?.[0]?.size <= MAX_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png and .webp files are accepted."
+    )
 });
 
 const imageUrls = [
@@ -27,7 +47,9 @@ const getInitialValues = async () => {
 };
 
 const Form = () => {
-  const form = useForm();
+  const form = useForm({
+    resolver: zodResolver(schema)
+  });
 
   useEffect(() => {
     // async default values
@@ -56,11 +78,8 @@ const Form = () => {
           <DropzoneField
             name="image"
             label="Image"
-            maxSize={10000}
-            accept={{
-              // 'image/jpeg': [],
-              "image/png": []
-            }}
+            maxSize={MAX_SIZE}
+            accept={extensionsToMimeType(ACCEPTED_IMAGE_TYPES)}
           />
           <Box>
             <Button type="submit" variant="contained">

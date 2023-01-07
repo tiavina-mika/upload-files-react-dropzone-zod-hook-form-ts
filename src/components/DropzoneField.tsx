@@ -35,7 +35,6 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
           <Box>
             <DropzoneInput
               onChange={(value: File) => {
-                // setError(name, 'Hello');
                 setValue(name, value);
               }}
               onBlur={onBlur}
