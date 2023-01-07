@@ -28,9 +28,16 @@ type Props = {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
   value?: File[];
+  onError: (error: any) => void;
 } & DropzoneOptions;
 
-const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
+const DropzoneInput: FC<Props> = ({
+  onChange,
+  onBlur,
+  value,
+  onError,
+  ...rest
+}) => {
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string>("");
 
@@ -52,27 +59,33 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
 
         if (errors.length) {
           const defaultError = errors[0];
+          let errorMessage = "";
 
           switch (defaultError?.code) {
             case "file-invalid-type":
-              setError("PNG only are accepted");
+              errorMessage = "PNG only are accepted";
               break;
             case "file-too-large":
               // get the max size from the error message
               const messagesArr = defaultError.message.split(" ");
               const maxSize = messagesArr.find((text: string) => Number(text));
-              setError(
+              errorMessage =
                 "File should be lesser than " +
-                  convertBytesToFileSize(+maxSize, "mb", true)
-              );
+                convertBytesToFileSize(+maxSize, "mb", true);
+
               break;
             default:
-              setError("An error occured");
+              errorMessage = "An error occured";
+          }
+
+          if (errorMessage) {
+            setError(errorMessage);
+            onError(errorMessage as string);
           }
         }
       }
     },
-    [onChange, files]
+    [onChange, files, onError]
   );
 
   const {

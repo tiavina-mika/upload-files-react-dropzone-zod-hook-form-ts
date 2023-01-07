@@ -19,6 +19,7 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
   const {
     control,
     setValue,
+    setError,
     formState: { errors }
   } = useFormContext();
 
@@ -34,14 +35,20 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
           <Box>
             <DropzoneInput
               onChange={(value: File) => {
+                // setError(name, 'Hello');
                 setValue(name, value);
               }}
               onBlur={onBlur}
               value={value}
+              onError={(error: any) => {
+                setError(name, { type: "custom", message: error });
+              }}
               {...rest}
             />
             {errors[name] && (
-              <FormHelperText error>{(errors as any)[name]}</FormHelperText>
+              <FormHelperText error>
+                {(errors as any)[name]?.message}
+              </FormHelperText>
             )}
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
           </Box>
