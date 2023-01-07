@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const StyledImage = styled("img")({
@@ -9,17 +9,23 @@ const StyledImage = styled("img")({
 type Props = {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
+  value: File[];
 };
 
-const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
+const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
   const [files, setFiles] = useState<File[]>([]);
-  // console.log('files', files);
+  console.log("files", files);
+
+  useEffect(() => {
+    if (!value) return;
+    setFiles(value);
+  }, [value]);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
       const allFiles = [...files, ...acceptedFiles];
       onChange(allFiles);
-      setFiles(allFiles);
+      // setFiles(allFiles);
     },
     [onChange, files]
   );
@@ -33,12 +39,12 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
     //   setFiles(newFiles as FileList[])
     // const newFiles = [...files];     // make a var for the new array
     // newFiles.splice(file, 1);        // remove the file from the array
-    setFiles(newFiles);
+    // setFiles(newFiles);
     onChange(newFiles);
   };
 
   const removeAll = () => {
-    setFiles([]);
+    // setFiles([]);
     onChange([]);
   };
 
@@ -53,19 +59,22 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
         )}
       </div>
 
-      {files.map((file, index) => (
-        <li key={index}>
-          <StyledImage
-            alt=""
-            src={URL.createObjectURL(file)}
-            // Revoke data uri after image is loaded
-            onLoad={() => {
-              URL.revokeObjectURL(URL.createObjectURL(file));
-            }}
-          />
-          <button onClick={() => removeFile(file)}>Remove File</button>
-        </li>
-      ))}
+      {Array.isArray(files) &&
+        files.map((file, index) => (
+          <li key={index}>
+            <StyledImage
+              alt=""
+              src={URL.createObjectURL(file)}
+              // Revoke data uri after image is loaded
+              // onLoad={() => {
+              //   URL.revokeObjectURL(URL.createObjectURL(file));
+              // }}
+            />
+            {file && (
+              <button onClick={() => removeFile(file)}>Remove File</button>
+            )}
+          </li>
+        ))}
 
       {files.length > 0 && <button onClick={removeAll}>Remove all</button>}
     </div>

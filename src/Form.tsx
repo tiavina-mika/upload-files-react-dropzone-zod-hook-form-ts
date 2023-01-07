@@ -1,20 +1,40 @@
 import { Box, Button, Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import TextEditorField from "./components/TextEditorField";
 import DropzoneField from "./components/DropzoneField";
+import { useEffect } from "react";
+import { getFileFromUrl } from "./utils/utils";
 
 const schema = z.object({
   content: z.string().min(1, "Content required")
 });
 
+/**
+ * get form initial values
+ */
+const getInitialValues = async () => {
+  const image1 = await getFileFromUrl(
+    "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+  );
+
+  console.log("image1", image1);
+
+  return {
+    image: image1 ? [image1] : []
+  };
+};
+
 const Form = () => {
-  const form = useForm({
-    mode: "onChange"
-    // defaultValues,
-    // resolver: zodResolver(schema)
-  });
+  const form = useForm();
+
+  useEffect(() => {
+    // async default values
+    const init = async () => {
+      const defaultValues = await getInitialValues();
+      form.reset(defaultValues);
+    };
+    init();
+  }, [form]);
 
   const { handleSubmit } = form;
 

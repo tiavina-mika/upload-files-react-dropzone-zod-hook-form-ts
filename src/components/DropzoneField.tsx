@@ -17,6 +17,7 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
   // hooks
   const {
     control,
+    setValue,
     formState: { errors }
   } = useFormContext();
 
@@ -32,7 +33,17 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
         name={name}
         render={({ field: { value, onChange, onBlur } }) => (
           <Box>
-            <DropzoneInput onChange={onChange} onBlur={onBlur} {...rest} />
+            <DropzoneInput
+              onChange={(value) => {
+                console.log("value", value);
+                // onChange(value);
+                setValue("image", value);
+              }}
+              onBlur={onBlur}
+              value={value}
+              {...rest}
+            />
+            {/* <DropzoneInput onChange={onChange} onBlur={onBlur} value={value} {...rest} /> */}
             {/* <DropzoneInput onChange={(e: any) => onChange(e.target.files[0])} {...rest} /> */}
             {errors[name] && (
               <FormHelperText error>{(errors as any)[name]}</FormHelperText>
