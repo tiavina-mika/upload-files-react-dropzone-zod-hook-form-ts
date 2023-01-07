@@ -35,11 +35,7 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
     const newFiles = files.filter(
       (currrentFile: File) => currrentFile.name !== file.name
     );
-    //   // newFiles.splice(newFiles.indexOf(file), 1)
-    //   setFiles(newFiles as FileList[])
-    // const newFiles = [...files];     // make a var for the new array
-    // newFiles.splice(file, 1);        // remove the file from the array
-    // setFiles(newFiles);
+
     onChange(newFiles);
   };
 
