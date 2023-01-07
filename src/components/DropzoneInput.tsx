@@ -2,11 +2,13 @@ import { FC, useCallback, useEffect, useState } from "react";
 
 import { Box, Stack, styled, Typography, useTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useDropzone } from "react-dropzone";
+import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
 
 import ImagesPreview from "./dropzone/ImagesPreview";
+import { convertBytesToFileSize } from "../utils/utils";
 
+// -------------- styled dropzone -------------- //
 type StyleDropzoneProps = {
   error: boolean;
 };
@@ -26,7 +28,7 @@ type Props = {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
   value?: File[];
-};
+} & DropzoneOptions;
 
 const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -44,7 +46,6 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
     (acceptedFiles, fileRejections) => {
       const allFiles = [...files, ...acceptedFiles];
       onChange(allFiles);
-
       // error handling
       if (fileRejections.length) {
         const errors = fileRejections[0].errors;
@@ -52,8 +53,21 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
         if (errors.length) {
           const defaultError = errors[0];
 
-          if (defaultError?.code === "file-invalid-type") {
-            setError("PNG only are accepted");
+          switch (defaultError?.code) {
+            case "file-invalid-type":
+              setError("PNG only are accepted");
+              break;
+            case "file-too-large":
+              // get the max size from the error message
+              const messagesArr = defaultError.message.split(" ");
+              const maxSize = messagesArr.find((text: string) => Number(text));
+              setError(
+                "File should be lesser than " +
+                  convertBytesToFileSize(+maxSize, "mb", true)
+              );
+              break;
+            default:
+              setError("An error occured");
           }
         }
       }
@@ -68,10 +82,12 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
     isDragReject
   } = useDropzone({
     onDrop,
-    accept: {
-      // 'image/jpeg': [],
-      "image/png": []
-    }
+    // maxSize,
+    // accept: {
+    //   // 'image/jpeg': [],
+    //   // "image/png": []
+    // },
+    ...rest
   });
 
   const removeFile = (file: File) => {

@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Box, FormHelperText, InputLabel } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import DropzoneInput from "./DropzoneInput";
+import { DropzoneOptions } from "react-dropzone";
 
 // ------------------------------------------ //
 // -------------- component ----------------- //
@@ -11,7 +12,7 @@ type Props = {
   name: string;
   label?: string;
   helperText?: string;
-};
+} & DropzoneOptions;
 
 const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
   // hooks

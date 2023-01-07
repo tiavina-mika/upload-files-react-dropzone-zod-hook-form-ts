@@ -40,3 +40,35 @@ export const getFileFromUrl = async (url: string): Promise<File> => {
 
   return file;
 };
+
+/**
+ * conver bytes to file sizes
+ */
+export const convertBytesToFileSize = (
+  bytes: number,
+  unit: "mb" | "kb" | "gb" = "mb",
+  withUnit = false
+) => {
+  let size = 1;
+  switch (unit) {
+    case "kb":
+      size = 1;
+      break;
+    case "mb":
+      size = 2;
+      break;
+    case "gb":
+      size = 3;
+      break;
+    default:
+      size = 2;
+  }
+
+  const transformedSize = bytes / Math.pow(1024, size);
+  const fixedSize = +transformedSize.toFixed(2);
+
+  if (withUnit) {
+    return fixedSize + unit;
+  }
+  return fixedSize;
+};

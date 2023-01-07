@@ -10,7 +10,7 @@ const schema = z.object({
 });
 
 const imageUrls = [
-  "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+  // "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
 ];
 
 /**
@@ -53,7 +53,15 @@ const Form = () => {
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DropzoneField name="image" label="Image" />
+          <DropzoneField
+            name="image"
+            label="Image"
+            maxSize={10000}
+            accept={{
+              // 'image/jpeg': [],
+              "image/png": []
+            }}
+          />
           <Box>
             <Button type="submit" variant="contained">
               Submit
