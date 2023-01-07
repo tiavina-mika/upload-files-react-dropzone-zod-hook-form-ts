@@ -1,9 +1,20 @@
 import { styled } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const StyledImage = styled("img")({
   width: 100
+});
+
+const StyledDropzone = styled("div")({
+  border: "2px solid " + grey[400],
+  borderRadius: 6,
+  height: 266,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center"
 });
 
 type Props = {
@@ -44,14 +55,14 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
 
   return (
     <div>
-      <div {...getRootProps()}>
+      <StyledDropzone {...getRootProps()} className="flexColumn">
         <input {...getInputProps({ onChange, onBlur })} />
         {isDragActive ? (
           <p>Drop the files here ...</p>
         ) : (
           <p>Drag 'n' drop some files here, or click to select files</p>
         )}
-      </div>
+      </StyledDropzone>
 
       {Array.isArray(files) &&
         files.map((file, index) => (
