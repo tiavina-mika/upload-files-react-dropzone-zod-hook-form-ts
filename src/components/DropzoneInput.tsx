@@ -65,7 +65,7 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
             <FaFileUpload size={32} color={grey[600]} />
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography>Add image</Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ color: grey[600] }}>
                 or drag and drop to upload
               </Typography>
             </Box>
