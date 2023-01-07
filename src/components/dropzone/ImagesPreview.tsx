@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import {
   Box,
@@ -8,10 +8,16 @@ import {
   CardMedia,
   IconButton,
   Stack,
+  styled,
   Typography
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
+import Dialog from "../Dialog";
+
+const StyledImagePreview = styled("img")({
+  width: "100%"
+});
 const sx = {
   cardActions: {
     position: "absolute",
@@ -28,11 +34,21 @@ const sx = {
 };
 type Props = {
   files?: File[];
-  removeFile: (file: File) => void;
-  removeAll: () => void;
+  onRemoveFile: (file: File) => void;
+  onRemoveAll: () => void;
 };
 
-const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
+const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const _onRemoveFile = (file: File) => (event) => {
+    event.stopPropagation();
+    onRemoveFile(file);
+  };
+
+  const onSelectImage = (file: File) => setSelectedImage(file);
+  const clearSelectImage = () => setSelectedImage(null);
+
   return (
     <Box sx={{ py: 2 }}>
       <Stack direction="row" spacing={3}>
@@ -40,20 +56,29 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
         {Array.isArray(files) &&
           files.map((file, index) => (
             <Card
-              sx={{ maxWidth: 200, position: "relative", p: 1 }}
+              sx={{
+                maxWidth: 200,
+                position: "relative",
+                p: 1,
+                cursor: "pointer"
+              }}
               key={index}
               elevation={1}
+              onClick={() => onSelectImage(file)}
             >
+              {/* ----- image ----- */}
               <CardMedia
                 component="img"
                 sx={{ height: 200 }}
                 image={URL.createObjectURL(file)}
                 title={file.name}
               />
+
+              {/* ----- buttons ----- */}
               <CardActions sx={sx.cardActions}>
                 <IconButton
                   aria-label="delete-image"
-                  onClick={() => removeFile(file)}
+                  onClick={_onRemoveFile(file)}
                   sx={sx.deleteButton}
                 >
                   <FiTrash2 size={22} />
@@ -67,7 +92,7 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
       {files.length > 0 && (
         <Box mt={1}>
           <Button
-            onClick={removeAll}
+            onClick={onRemoveAll}
             sx={{
               textTransform: "none",
               display: "flex",
@@ -79,6 +104,20 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
           </Button>
         </Box>
       )}
+
+      <Dialog
+        title={selectedImage?.name}
+        open={!!selectedImage}
+        toggle={clearSelectImage}
+        secondaryButtonText="Close"
+      >
+        {selectedImage ? (
+          <StyledImagePreview
+            alt={selectedImage?.name ?? ""}
+            src={URL.createObjectURL(selectedImage)}
+          />
+        ) : null}
+      </Dialog>
     </Box>
   );
 };

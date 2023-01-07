@@ -76,8 +76,8 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
       {/* ----- file previews ----- */}
       <ImagesPreview
         files={files}
-        removeAll={removeAll}
-        removeFile={removeFile}
+        onRemoveAll={removeAll}
+        onRemoveFile={removeFile}
       />
     </div>
   );
