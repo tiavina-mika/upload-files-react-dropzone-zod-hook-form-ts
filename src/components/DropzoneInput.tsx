@@ -1,14 +1,15 @@
-import { styled } from "@mui/material";
+import { Box, Stack, styled, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { FaFileUpload } from "react-icons/fa";
 
 const StyledImage = styled("img")({
   width: 100
 });
 
 const StyledDropzone = styled("div")({
-  border: "2px solid " + grey[400],
+  border: "2px solid " + grey[300],
   borderRadius: 6,
   height: 266,
   display: "flex",
@@ -58,9 +59,17 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
       <StyledDropzone {...getRootProps()} className="flexColumn">
         <input {...getInputProps({ onChange, onBlur })} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <Typography>Drop the files here ...</Typography>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <Stack direction="column" spacing={2} alignItems="center">
+            <FaFileUpload size={32} />
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Typography>Add image</Typography>
+              <Typography variant="body2">
+                or drag and drop to upload
+              </Typography>
+            </Box>
+          </Stack>
         )}
       </StyledDropzone>
 
