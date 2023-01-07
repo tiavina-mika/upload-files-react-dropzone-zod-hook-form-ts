@@ -40,9 +40,9 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
         {Array.isArray(files) &&
           files.map((file, index) => (
             <Card
-              sx={{ maxWidth: 200, position: "relative" }}
+              sx={{ maxWidth: 200, position: "relative", p: 1 }}
               key={index}
-              elevation={0}
+              elevation={1}
             >
               <CardMedia
                 component="img"

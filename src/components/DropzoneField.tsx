@@ -29,13 +29,11 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
       <Controller
         control={control}
         name={name}
-        render={({ field: { value, onChange, onBlur } }) => (
+        render={({ field: { value, onBlur } }) => (
           <Box>
             <DropzoneInput
-              onChange={(value) => {
-                console.log("value", value);
-                // onChange(value);
-                setValue("image", value);
+              onChange={(value: File) => {
+                setValue(name, value);
               }}
               onBlur={onBlur}
               value={value}
