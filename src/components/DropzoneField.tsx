@@ -24,9 +24,7 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
   return (
     <>
       {/* ----------- label ----------- */}
-      {label && (
-        <InputLabel sx={{ mb: 0.8, color: "#000" }}>{label}</InputLabel>
-      )}
+      {label && <InputLabel sx={{ mb: 1, color: "#000" }}>{label}</InputLabel>}
 
       <Controller
         control={control}

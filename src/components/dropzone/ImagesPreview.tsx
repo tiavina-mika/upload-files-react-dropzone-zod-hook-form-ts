@@ -1,6 +1,15 @@
 import { FC } from "react";
 
-import { Card, CardActions, CardMedia, IconButton, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardMedia,
+  IconButton,
+  Stack,
+  Typography
+} from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
 const sx = {
@@ -25,7 +34,7 @@ type Props = {
 
 const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
   return (
-    <div>
+    <Box sx={{ py: 2 }}>
       <Stack direction="row" spacing={3}>
         {/* ----- file previews ----- */}
         {Array.isArray(files) &&
@@ -37,7 +46,6 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
             >
               <CardMedia
                 component="img"
-                // sx={{ height: '100%' }}
                 sx={{ height: 200 }}
                 image={URL.createObjectURL(file)}
                 title={file.name}
@@ -54,8 +62,24 @@ const ImagesPreview: FC<Props> = ({ files, removeFile, removeAll }) => {
             </Card>
           ))}
       </Stack>
-      {files.length > 0 && <button onClick={removeAll}>Remove all</button>}
-    </div>
+
+      {/* ----- remove all button ----- */}
+      {files.length > 0 && (
+        <Box mt={1}>
+          <Button
+            onClick={removeAll}
+            sx={{
+              textTransform: "none",
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <FiTrash2 size={18} />
+            <Typography sx={{ ml: 1 }}>Remove all</Typography>
+          </Button>
+        </Box>
+      )}
+    </Box>
   );
 };
 
