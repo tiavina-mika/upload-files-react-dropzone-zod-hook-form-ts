@@ -9,13 +9,13 @@ const StyledImage = styled("img")({
 type Props = {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
-  value: File[];
+  value?: File[];
 };
 
 const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
   const [files, setFiles] = useState<File[]>([]);
-  console.log("files", files);
 
+  // load file from form initial values
   useEffect(() => {
     if (!value) return;
     setFiles(value);
@@ -25,7 +25,6 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
     (acceptedFiles) => {
       const allFiles = [...files, ...acceptedFiles];
       onChange(allFiles);
-      // setFiles(allFiles);
     },
     [onChange, files]
   );
@@ -40,7 +39,6 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
   };
 
   const removeAll = () => {
-    // setFiles([]);
     onChange([]);
   };
 
