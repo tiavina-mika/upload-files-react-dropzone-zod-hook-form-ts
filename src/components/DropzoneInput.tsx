@@ -37,6 +37,11 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
     onChange(newFiles);
   };
 
+  const removeAll = () => {
+    setFiles([]);
+    onChange([]);
+  };
+
   return (
     <div>
       <div {...getRootProps()}>
@@ -61,6 +66,8 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
           <button onClick={() => removeFile(file)}>Remove File</button>
         </li>
       ))}
+
+      {files.length > 0 && <button onClick={removeAll}>Remove all</button>}
     </div>
   );
 };
