@@ -9,18 +9,19 @@ const schema = z.object({
   content: z.string().min(1, "Content required")
 });
 
+const imageUrls = [
+  "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+];
 /**
  * get form initial values
  */
 const getInitialValues = async () => {
-  const image1 = await getFileFromUrl(
-    "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+  const images = await Promise.all(
+    imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
-  console.log("image1", image1);
-
   return {
-    image: image1 ? [image1] : []
+    image: images
   };
 };
 
