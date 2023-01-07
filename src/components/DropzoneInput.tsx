@@ -13,20 +13,10 @@ type Props = {
 
 const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
   const [files, setFiles] = useState<File[]>([]);
-  // const [files, setFiles] = useState<FileList[]>([]);
-  // const [files, setFiles] = useState<FileList[] | Blob[] | MediaSource[]>([]);
   // console.log('files', files);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      // Do something with the files
-      // console.log({ acceptedFiles });
-      // const filesWithPreview = acceptedFiles.map((file, index) => {
-      //   return Object.assign(file, {
-      //     preview: URL.createObjectURL(file),
-      //     id: index
-      //   });
-      // });
       const allFiles = [...files, ...acceptedFiles];
       onChange(allFiles);
       setFiles(allFiles);
@@ -35,10 +25,16 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const removeFile = (file) => {
-    const newFiles = [...files]; // make a var for the new array
-    newFiles.splice(file, 1); // remove the file from the array
+  const removeFile = (file: File) => {
+    const newFiles = files.filter(
+      (currrentFile: File) => currrentFile.name !== file.name
+    );
+    //   // newFiles.splice(newFiles.indexOf(file), 1)
+    //   setFiles(newFiles as FileList[])
+    // const newFiles = [...files];     // make a var for the new array
+    // newFiles.splice(file, 1);        // remove the file from the array
     setFiles(newFiles);
+    onChange(newFiles);
   };
 
   return (
@@ -53,7 +49,7 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, ...rest }) => {
       </div>
 
       {files.map((file, index) => (
-        <li key={file.name + index}>
+        <li key={index}>
           <StyledImage
             alt=""
             src={URL.createObjectURL(file)}
