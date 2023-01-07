@@ -4,6 +4,7 @@ import { Box, Stack, styled, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
+
 import ImagesPreview from "./dropzone/ImagesPreview";
 
 const StyledDropzone = styled("div")({
