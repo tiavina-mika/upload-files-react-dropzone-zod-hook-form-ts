@@ -1,12 +1,10 @@
+import { FC, useCallback, useEffect, useState } from "react";
+
 import { Box, Stack, styled, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { FC, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
-
-const StyledImage = styled("img")({
-  width: 100
-});
+import ImagesPreview from "./dropzone/ImagesPreview";
 
 const StyledDropzone = styled("div")({
   border: "2px solid " + grey[300],
@@ -61,8 +59,9 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
         {isDragActive ? (
           <Typography>Drop the files here ...</Typography>
         ) : (
+          // input labels
           <Stack direction="column" spacing={2} alignItems="center">
-            <FaFileUpload size={32} />
+            <FaFileUpload size={32} color={grey[600]} />
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography>Add image</Typography>
               <Typography variant="body2">
@@ -73,17 +72,12 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
         )}
       </StyledDropzone>
 
-      {Array.isArray(files) &&
-        files.map((file, index) => (
-          <li key={index}>
-            <StyledImage alt={file.name} src={URL.createObjectURL(file)} />
-            {file && (
-              <button onClick={() => removeFile(file)}>Remove File</button>
-            )}
-          </li>
-        ))}
-
-      {files.length > 0 && <button onClick={removeAll}>Remove all</button>}
+      {/* ----- file previews ----- */}
+      <ImagesPreview
+        files={files}
+        removeAll={removeAll}
+        removeFile={removeFile}
+      />
     </div>
   );
 };
