@@ -56,14 +56,7 @@ const DropzoneInput: FC<Props> = ({ onChange, onBlur, value, ...rest }) => {
       {Array.isArray(files) &&
         files.map((file, index) => (
           <li key={index}>
-            <StyledImage
-              alt=""
-              src={URL.createObjectURL(file)}
-              // Revoke data uri after image is loaded
-              // onLoad={() => {
-              //   URL.revokeObjectURL(URL.createObjectURL(file));
-              // }}
-            />
+            <StyledImage alt={file.name} src={URL.createObjectURL(file)} />
             {file && (
               <button onClick={() => removeFile(file)}>Remove File</button>
             )}
