@@ -46,7 +46,7 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
               {...rest}
             />
             {errors[name] && (
-              <FormHelperText error>
+              <FormHelperText error sx={{ my: 1 }}>
                 {(errors as any)[name]?.message}
               </FormHelperText>
             )}

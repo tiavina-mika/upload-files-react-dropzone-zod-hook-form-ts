@@ -143,11 +143,13 @@ const DropzoneInput: FC<Props> = ({
       </StyledDropzone>
 
       {/* ----- file previews ----- */}
-      <ImagesPreview
-        files={files}
-        onRemoveAll={removeAll}
-        onRemoveFile={removeFile}
-      />
+      {files.length > 0 && (
+        <ImagesPreview
+          files={files}
+          onRemoveAll={removeAll}
+          onRemoveFile={removeFile}
+        />
+      )}
     </div>
   );
 };
