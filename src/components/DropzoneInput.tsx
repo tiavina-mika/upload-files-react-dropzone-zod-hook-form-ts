@@ -6,7 +6,7 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
 
 import ImagesPreview from "./dropzone/ImagesPreview";
-import { convertBytesToFileSize } from "../utils/utils";
+import { convertFileSizetoBytes } from "../utils/utils";
 
 // -------------- styled dropzone -------------- //
 type StyleDropzoneProps = {
@@ -79,7 +79,7 @@ const DropzoneInput: FC<Props> = ({
               const maxSize = messagesArr.find((text: string) => Number(text));
               errorMessage =
                 "File should be lesser than " +
-                convertBytesToFileSize(+maxSize, "mb", true);
+                convertFileSizetoBytes(+maxSize, "mb");
 
               break;
             default:

@@ -3,25 +3,25 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
-import { getFileFromUrl } from "./utils/utils";
+import { getFileFromUrl, hasFilesMaxSize } from "./utils/fileUtils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // const ACCEPTED_IMAGE_TYPES = ["png"];
-// const MAX_SIZE = 10000;
+const MAX_SIZE = 5;
 const MAX_UPLOAD = 1;
 
 const schema = z.object({
   image: z
     .any()
-    // .instanceof(File)
-    // .optional()
     .refine((files: File[]) => {
       return files.length === 0 || files.length === MAX_UPLOAD;
     }, "Upload only one image")
-  // .refine((files) => {
-  //   console.log('refine files', files);
-  //   return files.length >= 1
-  // }, "Image is required.")
+    .refine((files) => {
+      return !hasFilesMaxSize(files, MAX_SIZE);
+    }, "Max file required is " + MAX_SIZE + "MB")
+  // .transform((files) => {
+  //   console.log('transform files', files);
+  // })
   // .refine((files) => files?.[0]?.size <= MAX_SIZE, `Max file size is 5MB.`)
   // .refine(
   //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),

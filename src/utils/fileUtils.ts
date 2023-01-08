@@ -83,3 +83,26 @@ export const extensionsToMimeType = (
 
   return mimeTypes;
 };
+
+export const convertFileSizetoBytes = (
+  size: number,
+  type = "mb"
+): number | string => {
+  const types = ["B", "KB", "MB", "GB", "TB"];
+
+  const key = types.indexOf(type.toUpperCase());
+
+  if (typeof key !== "boolean") {
+    return size * 1024 ** key;
+  }
+
+  return "invalid type: type must be GB/KB/MB etc.";
+};
+
+export const hasFilesMaxSize = (files: File[], maxSize: number): boolean => {
+  const sizes = files.map((file: File): number => file.size);
+  const hasMaxSize = sizes.some(
+    (size: number) => size > convertFileSizetoBytes(maxSize)
+  );
+  return hasMaxSize;
+};
