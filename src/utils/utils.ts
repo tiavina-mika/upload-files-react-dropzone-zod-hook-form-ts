@@ -72,3 +72,14 @@ export const convertBytesToFileSize = (
   }
   return fixedSize;
 };
+
+export const extensionsToMimeType = (
+  extensions: string[]
+): Record<string, any> => {
+  const mimeTypes: Record<string, any> = {};
+  extensions.forEach((extension) => {
+    mimeTypes["image/" + extension] = [];
+  });
+
+  return mimeTypes;
+};

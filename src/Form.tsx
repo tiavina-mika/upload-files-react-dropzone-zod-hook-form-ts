@@ -6,27 +6,27 @@ import { useEffect } from "react";
 import { getFileFromUrl } from "./utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const ACCEPTED_IMAGE_TYPES = ["png"];
-const MAX_SIZE = 10000;
-
-const extensionsToMimeType = (extensions: string[]): Record<string, any> => {
-  const mimeTypes: Record<string, any> = {};
-  extensions.forEach((extension) => {
-    mimeTypes["image/" + extension] = [];
-  });
-
-  return mimeTypes;
-};
+// const ACCEPTED_IMAGE_TYPES = ["png"];
+// const MAX_SIZE = 10000;
+const MAX_UPLOAD = 1;
 
 const schema = z.object({
   image: z
     .any()
-    .refine((files) => files?.length < 1, "Image is required.")
-    // .refine((files) => files?.[0]?.size <= MAX_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    )
+    // .instanceof(File)
+    // .optional()
+    .refine((files: File[]) => {
+      return files.length === 0 || files.length === MAX_UPLOAD;
+    }, "Upload only one image")
+  // .refine((files) => {
+  //   console.log('refine files', files);
+  //   return files.length >= 1
+  // }, "Image is required.")
+  // .refine((files) => files?.[0]?.size <= MAX_SIZE, `Max file size is 5MB.`)
+  // .refine(
+  //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+  //   ".jpg, .jpeg, .png and .webp files are accepted."
+  // )
 });
 
 const imageUrls = [
@@ -48,6 +48,7 @@ const getInitialValues = async () => {
 
 const Form = () => {
   const form = useForm({
+    mode: "onChange",
     resolver: zodResolver(schema)
   });
 
@@ -78,8 +79,8 @@ const Form = () => {
           <DropzoneField
             name="image"
             label="Image"
-            maxSize={MAX_SIZE}
-            accept={extensionsToMimeType(ACCEPTED_IMAGE_TYPES)}
+            // maxSize={MAX_SIZE}
+            // accept={extensionsToMimeType(ACCEPTED_IMAGE_TYPES)}
           />
           <Box>
             <Button type="submit" variant="contained">

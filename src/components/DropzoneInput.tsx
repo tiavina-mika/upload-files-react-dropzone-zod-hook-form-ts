@@ -29,6 +29,7 @@ type Props = {
   onBlur: () => void;
   value?: File[];
   onError: (error: any) => void;
+  hasError: boolean;
 } & DropzoneOptions;
 
 const DropzoneInput: FC<Props> = ({
@@ -36,6 +37,7 @@ const DropzoneInput: FC<Props> = ({
   onBlur,
   value,
   onError,
+  hasError,
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -48,6 +50,12 @@ const DropzoneInput: FC<Props> = ({
     if (!value) return;
     setFiles(value);
   }, [value]);
+
+  // error from form
+  useEffect(() => {
+    if (!hasError) return;
+    setFiles([]);
+  }, [hasError]);
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {

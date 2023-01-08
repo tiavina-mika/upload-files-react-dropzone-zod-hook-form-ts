@@ -31,17 +31,16 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
       <Controller
         control={control}
         name={name}
-        render={({ field: { value, onBlur } }) => (
+        render={({ field: { onChange, value, onBlur } }) => (
           <Box>
             <DropzoneInput
-              onChange={(value: File) => {
-                setValue(name, value);
-              }}
+              onChange={onChange}
               onBlur={onBlur}
               value={value}
               onError={(error: any) => {
                 setError(name, { type: "custom", message: error });
               }}
+              hasError={!!(errors as any)[name]}
               {...rest}
             />
             {errors[name] && (
