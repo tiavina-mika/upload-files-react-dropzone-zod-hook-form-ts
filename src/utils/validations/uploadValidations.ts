@@ -26,7 +26,7 @@ export const uploadSchema = z.object({
     .any()
     .refine((files: File[]) => {
       return files.length === 0 || files.length === MAX_IMAGE_UPLOAD;
-    }, "Upload only one image")
+    }, "Upload only one csv file")
     .refine((files) => {
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
