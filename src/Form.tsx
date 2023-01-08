@@ -80,7 +80,7 @@ const Form = () => {
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DropzoneField name="image" label="Image" />
-          <Box>
+          <Box mt={1}>
             <Button type="submit" variant="contained">
               Submit
             </Button>
