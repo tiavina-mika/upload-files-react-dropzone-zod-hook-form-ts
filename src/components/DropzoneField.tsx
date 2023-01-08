@@ -11,10 +11,19 @@ import { DropzoneOptions } from "react-dropzone";
 type Props = {
   name: string;
   label?: string;
+  inputLabel?: string;
   helperText?: string;
+  type?: "image" | "csv" | "json" | "pdf";
 } & DropzoneOptions;
 
-const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
+const DropzoneField: FC<Props> = ({
+  name,
+  label,
+  helperText,
+  inputLabel,
+  type = "image",
+  ...rest
+}) => {
   // hooks
   const {
     control,
@@ -40,6 +49,8 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
                 setError(name, { type: "custom", message: error });
               }}
               hasError={!!(errors as any)[name]}
+              type={type}
+              inputLabel={inputLabel}
               {...rest}
             />
             {errors[name] && (

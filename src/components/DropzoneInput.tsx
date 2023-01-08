@@ -30,6 +30,8 @@ type Props = {
   value?: File[];
   onError: (error: any) => void;
   hasError: boolean;
+  type: "image" | "csv" | "json" | "pdf";
+  inputLabel: string;
 } & DropzoneOptions;
 
 const DropzoneInput: FC<Props> = ({
@@ -38,6 +40,8 @@ const DropzoneInput: FC<Props> = ({
   value,
   onError,
   hasError,
+  type,
+  inputLabel,
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -133,7 +137,7 @@ const DropzoneInput: FC<Props> = ({
           <Stack direction="column" spacing={2} alignItems="center">
             <FaFileUpload size={32} color={grey[600]} />
             <Box display="flex" flexDirection="column" alignItems="center">
-              <Typography>Add image</Typography>
+              <Typography>{inputLabel}</Typography>
               <Typography
                 variant="body2"
                 sx={{ color: !!error ? theme.palette.error.main : grey[600] }}
@@ -145,8 +149,8 @@ const DropzoneInput: FC<Props> = ({
         )}
       </StyledDropzone>
 
-      {/* ----- file previews ----- */}
-      {files.length > 0 && (
+      {/* ----- image previews ----- */}
+      {type === "image" && files.length > 0 && (
         <ImagesPreview
           files={files}
           onRemoveAll={removeAll}
