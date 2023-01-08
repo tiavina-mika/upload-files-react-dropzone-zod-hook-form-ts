@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { hasAcceptedFileTypes, hasFilesMaxSize } from "../fileUtils";
 
 const ACCEPTED_IMAGE_TYPES = ["svg", "png"];

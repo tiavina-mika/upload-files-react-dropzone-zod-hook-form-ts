@@ -1,13 +1,11 @@
 import { FC } from "react";
 
 import { Box, FormHelperText, InputLabel, SxProps, Theme } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import DropzoneInput from "./DropzoneInput";
 import { DropzoneOptions } from "react-dropzone";
+import { Controller, useFormContext } from "react-hook-form";
 
-// ------------------------------------------ //
-// -------------- component ----------------- //
-// ------------------------------------------ //
+import DropzoneInput from "./DropzoneInput";
+
 type Props = {
   name: string;
   label?: string;
@@ -55,11 +53,15 @@ const DropzoneField: FC<Props> = ({
               inputLabel={inputLabel}
               {...rest}
             />
+
+            {/* ----------- errors ----------- */}
             {errors[name] && (
               <FormHelperText error sx={{ my: 1 }}>
                 {(errors as any)[name]?.message}
               </FormHelperText>
             )}
+
+            {/* ----------- helper text ----------- */}
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
           </Box>
         )}

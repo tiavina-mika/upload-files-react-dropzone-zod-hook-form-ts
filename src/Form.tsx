@@ -29,8 +29,9 @@ const Form = () => {
     resolver: zodResolver(uploadSchema)
   });
 
+  // load default values
   useEffect(() => {
-    // async default values
+    // async form default values
     const init = async () => {
       const defaultValues = await getInitialValues();
       form.reset(defaultValues);
