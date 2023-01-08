@@ -1,36 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
-import * as z from "zod";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
-import {
-  getFileFromUrl,
-  hasAcceptedFileTypes,
-  hasFilesMaxSize
-} from "./utils/fileUtils";
+import { getFileFromUrl } from "./utils/fileUtils";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const ACCEPTED_IMAGE_TYPES = ["svg", "png"];
-const MAX_SIZE = 5;
-const MAX_UPLOAD = 1;
-
-const schema = z.object({
-  image: z
-    .any()
-    .refine((files: File[]) => {
-      return files.length === 0 || files.length === MAX_UPLOAD;
-    }, "Upload only one image")
-    .refine((files) => {
-      return !hasFilesMaxSize(files, MAX_SIZE);
-    }, "Max file required is " + MAX_SIZE + "MB")
-    .refine((files: File[]): boolean => {
-      if (!files.length) return true;
-      return hasAcceptedFileTypes(files, ACCEPTED_IMAGE_TYPES);
-    }, ACCEPTED_IMAGE_TYPES.map((type: string) => "." + type) + " are accepted")
-    .transform((files: File[]) => {
-      return files[0];
-    })
-});
+import { uploadSchema } from "./utils/validations/uploadValidations";
 
 const imageUrls = [
   // "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
@@ -52,7 +26,7 @@ const getInitialValues = async () => {
 const Form = () => {
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(schema)
+    resolver: zodResolver(uploadSchema)
   });
 
   useEffect(() => {
