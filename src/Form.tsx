@@ -53,7 +53,17 @@ const Form = () => {
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* -------- inputs -------- */}
           <DropzoneField name="image" label="Image" inputLabel="Add image" />
+          <DropzoneField
+            name="csv"
+            label="CSV"
+            inputLabel="Add csv"
+            type="csv"
+            sx={{ mt: 2 }}
+          />
+
+          {/* -------- button -------- */}
           <Box mt={1}>
             <Button type="submit" variant="contained">
               Submit

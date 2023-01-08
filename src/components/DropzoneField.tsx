@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Box, FormHelperText, InputLabel } from "@mui/material";
+import { Box, FormHelperText, InputLabel, SxProps, Theme } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import DropzoneInput from "./DropzoneInput";
 import { DropzoneOptions } from "react-dropzone";
@@ -13,6 +13,7 @@ type Props = {
   label?: string;
   inputLabel?: string;
   helperText?: string;
+  sx?: SxProps<Theme>;
   type?: "image" | "csv" | "json" | "pdf";
 } & DropzoneOptions;
 
@@ -21,6 +22,7 @@ const DropzoneField: FC<Props> = ({
   label,
   helperText,
   inputLabel,
+  sx,
   type = "image",
   ...rest
 }) => {
@@ -32,7 +34,7 @@ const DropzoneField: FC<Props> = ({
   } = useFormContext();
 
   return (
-    <>
+    <Box sx={sx}>
       {/* ----------- label ----------- */}
       {label && <InputLabel sx={{ mb: 1, color: "#000" }}>{label}</InputLabel>}
 
@@ -62,7 +64,7 @@ const DropzoneField: FC<Props> = ({
           </Box>
         )}
       />
-    </>
+    </Box>
   );
 };
 
