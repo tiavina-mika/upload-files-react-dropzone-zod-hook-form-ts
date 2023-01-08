@@ -6,7 +6,7 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
 
 import ImagesPreview from "./dropzone/ImagesPreview";
-import { convertFileSizetoBytes } from "../utils/utils";
+import { convertFileSizetoBytes } from "../utils/fileUtils";
 
 // -------------- styled dropzone -------------- //
 type StyleDropzoneProps = {

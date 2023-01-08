@@ -84,6 +84,9 @@ export const extensionsToMimeType = (
   return mimeTypes;
 };
 
+/**
+ * convert kb, mb, gb to bytes
+ */
 export const convertFileSizetoBytes = (
   size: number,
   type = "mb"
@@ -99,10 +102,32 @@ export const convertFileSizetoBytes = (
   return "invalid type: type must be GB/KB/MB etc.";
 };
 
+/**
+ * check for file's max size limit to upload
+ */
 export const hasFilesMaxSize = (files: File[], maxSize: number): boolean => {
   const sizes = files.map((file: File): number => file.size);
   const hasMaxSize = sizes.some(
     (size: number) => size > convertFileSizetoBytes(maxSize)
   );
+
   return hasMaxSize;
+};
+
+/**
+ * check for accepted file's type to upload
+ */
+export const hasAcceptedFileTypes = (
+  files: File[],
+  acceptedTypes: string[]
+): boolean => {
+  const types = files.map((file: File): string => file.type);
+  const hasAcceptedFileTypes = types.some(
+    (type: string) =>
+      !!acceptedTypes.find((acceptedType: string): boolean =>
+        type.includes(acceptedType)
+      )
+  );
+
+  return hasAcceptedFileTypes;
 };

@@ -18,7 +18,6 @@ const DropzoneField: FC<Props> = ({ name, label, helperText, ...rest }) => {
   // hooks
   const {
     control,
-    setValue,
     setError,
     formState: { errors }
   } = useFormContext();

@@ -3,10 +3,14 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
-import { getFileFromUrl, hasFilesMaxSize } from "./utils/fileUtils";
+import {
+  getFileFromUrl,
+  hasAcceptedFileTypes,
+  hasFilesMaxSize
+} from "./utils/fileUtils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// const ACCEPTED_IMAGE_TYPES = ["png"];
+const ACCEPTED_IMAGE_TYPES = ["svg", "png"];
 const MAX_SIZE = 5;
 const MAX_UPLOAD = 1;
 
@@ -19,14 +23,13 @@ const schema = z.object({
     .refine((files) => {
       return !hasFilesMaxSize(files, MAX_SIZE);
     }, "Max file required is " + MAX_SIZE + "MB")
-  // .transform((files) => {
-  //   console.log('transform files', files);
-  // })
-  // .refine((files) => files?.[0]?.size <= MAX_SIZE, `Max file size is 5MB.`)
-  // .refine(
-  //   (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-  //   ".jpg, .jpeg, .png and .webp files are accepted."
-  // )
+    .refine((files: File[]): boolean => {
+      if (!files.length) return true;
+      return hasAcceptedFileTypes(files, ACCEPTED_IMAGE_TYPES);
+    }, ACCEPTED_IMAGE_TYPES.map((type: string) => "." + type) + " are accepted")
+    .transform((files: File[]) => {
+      return files[0];
+    })
 });
 
 const imageUrls = [
@@ -76,12 +79,7 @@ const Form = () => {
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DropzoneField
-            name="image"
-            label="Image"
-            // maxSize={MAX_SIZE}
-            // accept={extensionsToMimeType(ACCEPTED_IMAGE_TYPES)}
-          />
+          <DropzoneField name="image" label="Image" />
           <Box>
             <Button type="submit" variant="contained">
               Submit
