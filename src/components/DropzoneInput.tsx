@@ -32,9 +32,9 @@ type Props = {
   value?: File[];
   onError: (error: any) => void;
   hasError: boolean;
-  noDuplicateFiles: boolean;
+  noDuplicateFiles?: boolean;
   type: "image" | "csv" | "json" | "pdf";
-  inputLabel: string;
+  inputLabel?: string;
 } & DropzoneOptions;
 
 const DropzoneInput: FC<Props> = ({
