@@ -2,7 +2,7 @@
  * get the original filename from the url
  * instead of define manually a new name
  */
-const getFilenameFromContentDisposition = (res): string => {
+const getFilenameFromContentDisposition = (res): string | null => {
   let filename = null;
 
   const disposition = res.headers.get("content-disposition");
@@ -70,6 +70,7 @@ export const convertBytesToFileSize = (
   if (withUnit) {
     return fixedSize + unit;
   }
+
   return fixedSize;
 };
 

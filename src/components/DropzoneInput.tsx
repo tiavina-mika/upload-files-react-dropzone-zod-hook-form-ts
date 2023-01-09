@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 
 import { Box, Stack, styled, Typography, useTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
+import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
 import { uniqBy } from "lodash";
 
@@ -66,7 +66,7 @@ const DropzoneInput: FC<Props> = ({
   }, [hasError]);
 
   const onDrop = useCallback(
-    (acceptedFiles, fileRejections) => {
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       const allFiles = [...files, ...acceptedFiles];
 
       // remove duplicated files
