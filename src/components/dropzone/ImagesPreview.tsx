@@ -4,12 +4,10 @@ import {
   Box,
   Card,
   CardActions,
-  CardContent,
   CardMedia,
   IconButton,
   Stack,
   styled,
-  Typography,
   useTheme
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
@@ -37,7 +35,7 @@ const sx = {
 };
 
 type Props = {
-  files?: File[];
+  files: File[];
   onRemoveFile: (file: File) => void;
   onRemoveAll: () => void;
 };
@@ -46,7 +44,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
   const theme = useTheme();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const _onRemoveFile = (file: File) => (event) => {
+  const _onRemoveFile = (file: File) => (event: any) => {
     event.stopPropagation();
     onRemoveFile(file);
   };
