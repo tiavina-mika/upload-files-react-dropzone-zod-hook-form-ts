@@ -82,14 +82,14 @@ const DropzoneInput: FC<Props> = ({
 
           switch (defaultError?.code) {
             case "file-invalid-type":
-              errorMessage = "PNG only are accepted";
+              errorMessage = "File type not allowed";
               break;
             case "file-too-large":
               // get the max size from the error message
               const messagesArr = defaultError.message.split(" ");
               const maxSize = messagesArr.find((text: string) => Number(text));
               errorMessage =
-                "File should be lesser than " +
+                "File should be less than " +
                 convertFileSizetoBytes(+maxSize, "mb");
 
               break;
