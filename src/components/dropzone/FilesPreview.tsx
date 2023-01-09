@@ -1,16 +1,12 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import {
   Box,
-  Card,
-  CardActions,
-  CardMedia,
   IconButton,
   List,
   ListItem,
   ListItemText,
   Stack,
-  styled,
   useTheme
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
@@ -19,7 +15,7 @@ import RemoveAllButton from "./RemoveAllButton";
 import { convertBytesToFileSize } from "../../utils/fileUtils";
 
 type Props = {
-  files?: File[];
+  files: File[];
   onRemoveFile: (file: File) => void;
   onRemoveAll: () => void;
 };
