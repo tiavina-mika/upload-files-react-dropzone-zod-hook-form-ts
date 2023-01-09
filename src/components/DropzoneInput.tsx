@@ -4,6 +4,7 @@ import { Box, Stack, styled, Typography, useTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
+import { uniqBy } from "lodash";
 
 import ImagesPreview from "./dropzone/ImagesPreview";
 import { convertFileSizetoBytes } from "../utils/fileUtils";
@@ -31,6 +32,7 @@ type Props = {
   value?: File[];
   onError: (error: any) => void;
   hasError: boolean;
+  noDuplicateFiles: boolean;
   type: "image" | "csv" | "json" | "pdf";
   inputLabel: string;
 } & DropzoneOptions;
@@ -43,6 +45,7 @@ const DropzoneInput: FC<Props> = ({
   hasError,
   type,
   inputLabel,
+  noDuplicateFiles = true,
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -65,7 +68,10 @@ const DropzoneInput: FC<Props> = ({
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
       const allFiles = [...files, ...acceptedFiles];
-      onChange(allFiles);
+
+      // remove duplicated files
+      const uniqFiles = noDuplicateFiles ? uniqBy(allFiles, "name") : allFiles;
+      onChange(uniqFiles);
       // error handling
       if (fileRejections.length) {
         const errors = fileRejections[0].errors;
@@ -98,7 +104,7 @@ const DropzoneInput: FC<Props> = ({
         }
       }
     },
-    [onChange, files, onError]
+    [onChange, files, onError, noDuplicateFiles]
   );
 
   const {
