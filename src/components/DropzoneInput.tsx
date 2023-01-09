@@ -73,7 +73,7 @@ const DropzoneInput: FC<Props> = ({
       const uniqFiles = noDuplicateFiles ? uniqBy(allFiles, "name") : allFiles;
       onChange(uniqFiles);
       // error handling
-      if (fileRejections.length) {
+      if (fileRejections?.length) {
         const errors = fileRejections[0].errors;
 
         if (errors.length) {

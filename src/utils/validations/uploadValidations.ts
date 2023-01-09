@@ -25,27 +25,29 @@ export const uploadSchema = z.object({
     }, ACCEPTED_IMAGE_TYPES.map((type: string) => "." + type) + " are accepted")
     // get only one file from list
     .transform((files: File[]) => {
-      if (!files || files.length === 0) return;
+      if (!files || files?.length === 0) return;
       return files[0];
     }),
   csv: z
     .any()
     // file count validation
     .refine((files: File[]) => {
+      if (!files) return true;
       return files.length === 0 || files.length === MAX_IMAGE_UPLOAD;
     }, "Upload only one csv file")
     // file size validation
     .refine((files) => {
+      if (!files) return true;
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
     // file types validation
     .refine((files: File[]): boolean => {
-      if (!files.length) return true;
+      if (!files || !files.length) return true;
       return hasAcceptedFileTypes(files, ACCEPTED_CSV_TYPES);
     }, ACCEPTED_CSV_TYPES.map((type: string) => "." + type) + " are accepted")
     // get only one file from list
     .transform((files: File[]) => {
-      if (!files || files.length === 0) return;
+      if (!files || files?.length === 0) return;
       return files[0];
     })
 });

@@ -14,12 +14,12 @@ const imageUrls = [
  * get form initial values
  */
 const getInitialValues = async () => {
-  const images = await Promise.all(
+  const [image] = await Promise.all(
     imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
   return {
-    image: images
+    image
   };
 };
 
