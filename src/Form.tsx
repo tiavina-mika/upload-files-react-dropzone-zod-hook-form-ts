@@ -7,19 +7,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { uploadSchema } from "./utils/validations/uploadValidations";
 
 const imageUrls = [
-  // "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+  "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
 ];
 
 /**
  * get form initial values
  */
 const getInitialValues = async () => {
-  const [image] = await Promise.all(
+  const images = await Promise.all(
     imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
   return {
-    image
+    image: images
   };
 };
 

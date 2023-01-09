@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { hasAcceptedFileTypes, hasFilesMaxSize } from "../fileUtils";
 
-const ACCEPTED_IMAGE_TYPES = ["svg", "png"];
+const ACCEPTED_IMAGE_TYPES = ["jpeg", "png"];
 const ACCEPTED_CSV_TYPES = ["csv"];
 const MAX_IMAGE_SIZE = 5;
 const MAX_IMAGE_UPLOAD = 1;
@@ -10,10 +10,17 @@ const MAX_IMAGE_UPLOAD = 1;
 export const uploadSchema = z.object({
   image: z
     .any()
+    .transform((files: File[]) => {
+      if (files.length > MAX_IMAGE_UPLOAD) {
+        return [files[MAX_IMAGE_UPLOAD]];
+      }
+
+      return [files[0]];
+    })
     // file count validation
-    .refine((files: File[]) => {
-      return files.length === 0 || files.length === MAX_IMAGE_UPLOAD;
-    }, "Upload only one image")
+    // .refine((files: File[]) => {
+    //   return files.length === 0 || files.length === MAX_IMAGE_UPLOAD;
+    // }, "Upload only one image")
     // file size validation
     .refine((files) => {
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
