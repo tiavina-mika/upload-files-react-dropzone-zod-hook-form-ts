@@ -65,7 +65,7 @@ export const convertBytesToFileSize = (
   }
 
   const transformedSize = bytes / Math.pow(1024, size);
-  const fixedSize = +transformedSize.toFixed(2);
+  const fixedSize = +transformedSize.toFixed(3);
 
   if (withUnit) {
     return fixedSize + unit;

@@ -7,7 +7,8 @@ import {
   CardMedia,
   IconButton,
   Stack,
-  styled
+  styled,
+  useTheme
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
@@ -40,6 +41,7 @@ type Props = {
 };
 
 const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
+  const theme = useTheme();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const _onRemoveFile = (file: File) => (event) => {
@@ -82,7 +84,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                   onClick={_onRemoveFile(file)}
                   sx={sx.deleteButton}
                 >
-                  <FiTrash2 size={22} />
+                  <FiTrash2 size={22} color={theme.palette.error.main} />
                 </IconButton>
               </CardActions>
             </Card>

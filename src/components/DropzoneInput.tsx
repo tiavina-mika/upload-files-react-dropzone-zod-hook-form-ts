@@ -7,6 +7,7 @@ import { FaFileUpload } from "react-icons/fa";
 
 import ImagesPreview from "./dropzone/ImagesPreview";
 import { convertFileSizetoBytes } from "../utils/fileUtils";
+import FilesPreview from "./dropzone/FilesPreview";
 
 // -------------- styled dropzone -------------- //
 type StyleDropzoneProps = {
@@ -152,6 +153,14 @@ const DropzoneInput: FC<Props> = ({
       {/* ----- image previews ----- */}
       {type === "image" && files.length > 0 && (
         <ImagesPreview
+          files={files}
+          onRemoveAll={removeAll}
+          onRemoveFile={removeFile}
+        />
+      )}
+
+      {type !== "image" && files.length > 0 && (
+        <FilesPreview
           files={files}
           onRemoveAll={removeAll}
           onRemoveFile={removeFile}

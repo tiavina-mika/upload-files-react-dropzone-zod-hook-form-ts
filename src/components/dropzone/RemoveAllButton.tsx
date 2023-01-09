@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
 type Props = {
@@ -8,6 +8,8 @@ type Props = {
 };
 
 const RemoveAllButton: FC<Props> = ({ onClick }) => {
+  const theme = useTheme();
+
   return (
     <Box mt={1}>
       <Button
@@ -15,7 +17,8 @@ const RemoveAllButton: FC<Props> = ({ onClick }) => {
         sx={{
           textTransform: "none",
           display: "flex",
-          alignItems: "center"
+          alignItems: "center",
+          color: theme.palette.error.main
         }}
       >
         <FiTrash2 size={18} />
