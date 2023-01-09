@@ -2,22 +2,22 @@ import { FC, useState } from "react";
 
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardMedia,
   IconButton,
   Stack,
-  styled,
-  Typography
+  styled
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
 import Dialog from "../Dialog";
+import RemoveAllButton from "./RemoveAllButton";
 
 const StyledImagePreview = styled("img")({
   width: "100%"
 });
+
 const sx = {
   cardActions: {
     position: "absolute",
@@ -32,6 +32,7 @@ const sx = {
     }
   }
 };
+
 type Props = {
   files?: File[];
   onRemoveFile: (file: File) => void;
@@ -89,21 +90,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
       </Stack>
 
       {/* ----- remove all button ----- */}
-      {files.length > 0 && (
-        <Box mt={1}>
-          <Button
-            onClick={onRemoveAll}
-            sx={{
-              textTransform: "none",
-              display: "flex",
-              alignItems: "center"
-            }}
-          >
-            <FiTrash2 size={18} />
-            <Typography sx={{ ml: 1 }}>Remove all</Typography>
-          </Button>
-        </Box>
-      )}
+      {files.length > 1 && <RemoveAllButton onClick={onRemoveAll} />}
 
       <Dialog
         title={selectedImage?.name}
