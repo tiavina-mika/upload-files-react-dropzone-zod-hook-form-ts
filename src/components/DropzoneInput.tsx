@@ -172,7 +172,6 @@ const DropzoneInput: FC<Props> = ({
 
   // initialize files
   const onReset = () => {
-    // setFiles(initialFiles);
     onChange(initialFiles);
   };
 
