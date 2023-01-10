@@ -94,7 +94,9 @@ const DropzoneInput: FC<Props> = ({
 
           switch (defaultError?.code) {
             case "too-many-files":
-              errorMessage = "Too many files";
+              errorMessage = rest.maxFiles
+                ? `${rest.maxFiles} file${rest.maxFiles > 1 ? "s" : ""} allowed`
+                : "Too many files";
               break;
             case "file-invalid-type":
               errorMessage = "File type not allowed";
@@ -118,15 +120,7 @@ const DropzoneInput: FC<Props> = ({
         }
       }
     },
-    [
-      onChange,
-      files,
-      onError,
-      noDuplicateFiles,
-      error,
-      rest.maxFiles,
-      initialize
-    ]
+    [onChange, files, onError, noDuplicateFiles, rest.maxFiles, initialize]
   );
 
   const {
