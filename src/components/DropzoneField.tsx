@@ -28,6 +28,7 @@ const DropzoneField: FC<Props> = ({
   const {
     control,
     setError,
+    clearErrors,
     formState: { errors }
   } = useFormContext();
 
@@ -46,9 +47,13 @@ const DropzoneField: FC<Props> = ({
               onBlur={onBlur}
               value={value}
               onError={(error: any) => {
+                if (!error) {
+                  clearErrors(name);
+                  return;
+                }
                 setError(name, { type: "custom", message: error });
               }}
-              hasError={!!(errors as any)[name]}
+              error={(errors as any)[name]}
               type={type}
               inputLabel={inputLabel}
               {...rest}

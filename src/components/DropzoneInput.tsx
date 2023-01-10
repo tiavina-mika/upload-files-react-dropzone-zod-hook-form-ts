@@ -33,10 +33,10 @@ type Props = {
   onBlur: () => void;
   value?: File[];
   onError: (error: any) => void;
-  hasError: boolean;
   noDuplicateFiles?: boolean;
   type: "image" | "csv" | "json" | "pdf";
   inputLabel?: string;
+  error: string;
 } & DropzoneOptions;
 
 const DropzoneInput: FC<Props> = ({
@@ -44,16 +44,15 @@ const DropzoneInput: FC<Props> = ({
   onBlur,
   value,
   onError,
-  hasError,
   type,
   inputLabel,
+  error,
   noDuplicateFiles = true,
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [initialFiles, setInitialFiles] = useState<File[]>([]);
   const [initialize, setInitialize] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   const theme = useTheme();
 
@@ -61,12 +60,6 @@ const DropzoneInput: FC<Props> = ({
     if (!value) return;
     setFiles(value);
   }, [value]);
-
-  // error from form
-  useEffect(() => {
-    if (!hasError) return;
-    setFiles([]);
-  }, [hasError]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -76,9 +69,12 @@ const DropzoneInput: FC<Props> = ({
         setInitialFiles(files);
       }
       const allFiles = [...files, ...acceptedFiles];
+
       if (rest.maxFiles && rest.maxFiles === 1) {
-        const lastFiles = acceptedFiles[acceptedFiles.length - 1];
-        onChange([lastFiles]);
+        if (acceptedFiles.length > 0) {
+          const lastFiles = acceptedFiles[acceptedFiles.length - 1];
+          onChange([lastFiles]);
+        }
       } else {
         // remove duplicated files
         const uniqFiles = noDuplicateFiles
@@ -97,6 +93,9 @@ const DropzoneInput: FC<Props> = ({
           let errorMessage = "";
 
           switch (defaultError?.code) {
+            case "too-many-files":
+              errorMessage = "Too many files";
+              break;
             case "file-invalid-type":
               errorMessage = "File type not allowed";
               break;
@@ -114,13 +113,20 @@ const DropzoneInput: FC<Props> = ({
           }
 
           if (errorMessage) {
-            setError(errorMessage);
             onError(errorMessage as string);
           }
         }
       }
     },
-    [onChange, files, onError, noDuplicateFiles, rest.maxFiles, initialize]
+    [
+      onChange,
+      files,
+      onError,
+      noDuplicateFiles,
+      error,
+      rest.maxFiles,
+      initialize
+    ]
   );
 
   const {
@@ -161,6 +167,7 @@ const DropzoneInput: FC<Props> = ({
   // initialize files
   const onReset = () => {
     onChange(initialFiles);
+    onError("");
   };
 
   return (
