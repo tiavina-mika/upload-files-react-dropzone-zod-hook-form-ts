@@ -24,7 +24,7 @@ const FilesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ py: 0.5 }}>
+    <Box sx={{ pt: 0.5 }}>
       <Stack direction="row" spacing={3}>
         <List>
           {files.map((file: File, index: number) => (
