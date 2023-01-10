@@ -63,7 +63,12 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                 maxWidth: 200,
                 position: "relative",
                 p: 1,
-                cursor: "pointer"
+                cursor: "pointer",
+                border:
+                  "1px solid " +
+                  ((file as any).path
+                    ? "transparent"
+                    : theme.palette.success.main)
               }}
               key={index}
               elevation={1}
@@ -76,6 +81,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                 image={URL.createObjectURL(file)}
                 title={file.name}
               />
+              <span>{file.path}</span>
 
               {/* ----- buttons ----- */}
               <CardActions sx={sx.cardActions}>
