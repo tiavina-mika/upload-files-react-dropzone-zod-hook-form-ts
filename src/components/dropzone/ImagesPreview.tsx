@@ -13,7 +13,7 @@ import {
 import { FiTrash2 } from "react-icons/fi";
 
 import Dialog from "../Dialog";
-import RemoveAllButton from "./RemoveAllButton";
+import InputActionButton from "./InputActionButton";
 
 const StyledImagePreview = styled("img")({
   width: "100%"
@@ -53,7 +53,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
   const clearSelectImage = () => setSelectedImage(null);
 
   return (
-    <Box sx={{ py: 2 }}>
+    <Box sx={{ pt: 2 }}>
       <Stack direction="row" spacing={3}>
         {/* ----- file previews ----- */}
         {Array.isArray(files) &&
@@ -92,7 +92,14 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
       </Stack>
 
       {/* ----- remove all button ----- */}
-      {files.length > 1 && <RemoveAllButton onClick={onRemoveAll} />}
+      {files.length > 1 && (
+        <InputActionButton
+          onClick={onRemoveAll}
+          color={theme.palette.error.main}
+          text="Clear"
+          icon={<FiTrash2 size={18} />}
+        />
+      )}
 
       <Dialog
         title={selectedImage?.name}

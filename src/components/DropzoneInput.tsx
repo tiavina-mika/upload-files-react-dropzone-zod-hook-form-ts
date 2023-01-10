@@ -1,13 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 
-import {
-  Box,
-  Button,
-  Stack,
-  styled,
-  Typography,
-  useTheme
-} from "@mui/material";
+import { Box, Stack, styled, Typography, useTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
@@ -16,6 +9,8 @@ import { uniqBy } from "lodash";
 import ImagesPreview from "./dropzone/ImagesPreview";
 import { convertFileSizetoBytes } from "../utils/fileUtils";
 import FilesPreview from "./dropzone/FilesPreview";
+import { FiRefreshCcw } from "react-icons/fi";
+import InputActionButton from "./dropzone/InputActionButton";
 
 // -------------- styled dropzone -------------- //
 type StyleDropzoneProps = {
@@ -219,7 +214,12 @@ const DropzoneInput: FC<Props> = ({
         />
       )}
 
-      <Button onClick={onReset}>Reset</Button>
+      <InputActionButton
+        onClick={onReset}
+        color={theme.palette.primary.main}
+        text="Reset"
+        icon={<FiRefreshCcw size={18} />}
+      />
     </div>
   );
 };

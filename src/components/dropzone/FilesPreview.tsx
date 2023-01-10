@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 
-import RemoveAllButton from "./RemoveAllButton";
 import { convertBytesToFileSize } from "../../utils/fileUtils";
+import InputActionButton from "./InputActionButton";
 
 type Props = {
   files: File[];
@@ -54,7 +54,14 @@ const FilesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
       </Stack>
 
       {/* ----- remove all button ----- */}
-      {files.length > 1 && <RemoveAllButton onClick={onRemoveAll} />}
+      {files.length > 1 && (
+        <InputActionButton
+          onClick={onRemoveAll}
+          color={theme.palette.error.main}
+          text="Clear"
+          icon={<FiTrash2 size={18} />}
+        />
+      )}
     </Box>
   );
 };
