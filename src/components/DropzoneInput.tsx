@@ -1,6 +1,13 @@
 import { FC, useCallback, useEffect, useState } from "react";
 
-import { Box, Stack, styled, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  styled,
+  Typography,
+  useTheme
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { DropzoneOptions, FileRejection, useDropzone } from "react-dropzone";
 import { FaFileUpload } from "react-icons/fa";
@@ -49,15 +56,22 @@ const DropzoneInput: FC<Props> = ({
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const [initialFiles, setInitialFiles] = useState<File[]>([]);
+  const [initialize, setInitialize] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const theme = useTheme();
 
-  // load file from form initial values
   useEffect(() => {
     if (!value) return;
     setFiles(value);
   }, [value]);
+
+  // load file from form initial values
+  useEffect(() => {
+    if (!initialize) return;
+    onChange(initialFiles);
+  }, [initialFiles, initialize, onChange]);
 
   // error from form
   useEffect(() => {
@@ -67,11 +81,24 @@ const DropzoneInput: FC<Props> = ({
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      const allFiles = [...files, ...acceptedFiles];
+      setInitialize(true);
 
-      // remove duplicated files
-      const uniqFiles = noDuplicateFiles ? uniqBy(allFiles, "name") : allFiles;
-      onChange(uniqFiles);
+      if (!initialize) {
+        setInitialFiles(files);
+      }
+      const allFiles = [...files, ...acceptedFiles];
+      if (rest.maxFiles && rest.maxFiles === 1) {
+        const lastFiles = acceptedFiles[acceptedFiles.length - 1];
+        onChange([lastFiles]);
+      } else {
+        // remove duplicated files
+        const uniqFiles = noDuplicateFiles
+          ? uniqBy(allFiles, "name")
+          : allFiles;
+
+        onChange(uniqFiles);
+      }
+
       // error handling
       if (fileRejections?.length) {
         const errors = fileRejections[0].errors;
@@ -104,7 +131,7 @@ const DropzoneInput: FC<Props> = ({
         }
       }
     },
-    [onChange, files, onError, noDuplicateFiles]
+    [onChange, files, onError, noDuplicateFiles, rest.maxFiles, initialize]
   );
 
   const {
@@ -118,6 +145,13 @@ const DropzoneInput: FC<Props> = ({
   });
 
   const removeFile = (file: File) => {
+    // copy inital files for reset
+    setInitialize(true);
+    if (!initialize) {
+      setInitialFiles(files);
+    }
+
+    // remove the selected file
     const newFiles = files.filter(
       (currrentFile: File) => currrentFile.name !== file.name
     );
@@ -126,7 +160,20 @@ const DropzoneInput: FC<Props> = ({
   };
 
   const removeAll = () => {
+    // copy inital files for reset
+    setInitialize(true);
+    if (!initialize) {
+      setInitialFiles(files);
+    }
+
+    // remove all files
     onChange([]);
+  };
+
+  // initialize files
+  const onReset = () => {
+    // setFiles(initialFiles);
+    onChange(initialFiles);
   };
 
   return (
@@ -172,6 +219,8 @@ const DropzoneInput: FC<Props> = ({
           onRemoveFile={removeFile}
         />
       )}
+
+      <Button onClick={onReset}>Reset</Button>
     </div>
   );
 };

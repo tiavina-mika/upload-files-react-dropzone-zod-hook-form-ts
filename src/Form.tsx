@@ -4,10 +4,20 @@ import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
 import { getFileFromUrl } from "./utils/fileUtils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { uploadSchema } from "./utils/validations/uploadValidations";
+import {
+  MAX_IMAGES_UPLOAD,
+  MAX_IMAGE_UPLOAD,
+  uploadSchema
+} from "./utils/validations/uploadValidations";
 
 const imageUrls = [
-  "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp"
+  // "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp",
+  "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+];
+
+const multipleImagesUrls = [
+  "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp",
+  "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 ];
 
 /**
@@ -18,8 +28,13 @@ const getInitialValues = async () => {
     imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
+  const multipleImages = await Promise.all(
+    multipleImagesUrls.map((url: string) => getFileFromUrl(url))
+  );
+
   return {
-    image: images
+    image: images,
+    images: multipleImages
   };
 };
 
@@ -55,7 +70,18 @@ const Form = () => {
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* -------- inputs -------- */}
-          <DropzoneField name="image" label="Image" inputLabel="Add image" />
+          <DropzoneField
+            name="image"
+            label="Image"
+            inputLabel="Add image"
+            maxFiles={MAX_IMAGE_UPLOAD}
+          />
+          <DropzoneField
+            name="images"
+            label="Images"
+            inputLabel="Add images"
+            maxFiles={MAX_IMAGES_UPLOAD}
+          />
           <DropzoneField
             name="csv"
             label="CSV"
