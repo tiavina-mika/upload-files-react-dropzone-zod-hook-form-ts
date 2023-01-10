@@ -62,12 +62,6 @@ const DropzoneInput: FC<Props> = ({
     setFiles(value);
   }, [value]);
 
-  // load file from form initial values
-  useEffect(() => {
-    if (!initialize) return;
-    onChange(initialFiles);
-  }, [initialFiles, initialize, onChange]);
-
   // error from form
   useEffect(() => {
     if (!hasError) return;
@@ -150,7 +144,6 @@ const DropzoneInput: FC<Props> = ({
     const newFiles = files.filter(
       (currrentFile: File) => currrentFile.name !== file.name
     );
-
     onChange(newFiles);
   };
 
