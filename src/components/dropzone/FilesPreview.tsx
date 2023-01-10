@@ -47,6 +47,9 @@ const FilesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                   convertBytesToFileSize(file.size, "mb", true) +
                   ")"
                 }
+                sx={{
+                  color: (file as any).path ? "#000" : theme.palette.info.main
+                }}
               />
             </ListItem>
           ))}

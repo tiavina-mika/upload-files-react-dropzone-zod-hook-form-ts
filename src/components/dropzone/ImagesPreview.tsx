@@ -66,9 +66,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                 cursor: "pointer",
                 border:
                   "1px solid " +
-                  ((file as any).path
-                    ? "transparent"
-                    : theme.palette.success.main)
+                  ((file as any).path ? "transparent" : theme.palette.info.main)
               }}
               key={index}
               elevation={1}
