@@ -79,7 +79,7 @@ const ImagesPreview: FC<Props> = ({ files, onRemoveFile, onRemoveAll }) => {
                 image={URL.createObjectURL(file)}
                 title={file.name}
               />
-              <span>{file.path}</span>
+              <span>{(file as any).path}</span>
 
               {/* ----- buttons ----- */}
               <CardActions sx={sx.cardActions}>
