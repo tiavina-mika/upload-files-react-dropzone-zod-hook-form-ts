@@ -33,7 +33,7 @@ export const uploadSchema = z.object({
     //   return files.length === 0 || files.length === MAX_IMAGES_UPLOAD;
     // }, "Upload only one image")
     // file size validation
-    .refine((files) => {
+    .refine((files: File[]) => {
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
     // file types validation
@@ -50,7 +50,7 @@ export const uploadSchema = z.object({
       return files.length === 0 || files.length === MAX_CSV_UPLOAD;
     }, "Upload only one csv file")
     // file size validation
-    .refine((files) => {
+    .refine((files: File[]) => {
       if (!files) return true;
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
