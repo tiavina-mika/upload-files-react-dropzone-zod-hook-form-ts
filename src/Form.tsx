@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
@@ -59,51 +59,37 @@ const Form = () => {
   const onSubmit = (values) => console.log("values", values);
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between"
-      }}
-    >
-      <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* -------- inputs -------- */}
-          <DropzoneField
-            name="image"
-            label="Image"
-            inputLabel="Add image"
-            maxFiles={MAX_IMAGE_UPLOAD}
-          />
-          <DropzoneField
-            name="images"
-            label="Images"
-            inputLabel="Add images"
-            maxFiles={MAX_IMAGES_UPLOAD}
-          />
-          <DropzoneField
-            name="csv"
-            label="CSV"
-            inputLabel="Add csv"
-            type="csv"
-            sx={{ mt: 2 }}
-          />
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* -------- inputs -------- */}
+        <DropzoneField
+          name="image"
+          label="Image"
+          inputLabel="Add image"
+          maxFiles={MAX_IMAGE_UPLOAD}
+        />
+        <DropzoneField
+          name="images"
+          label="Images"
+          inputLabel="Add images"
+          maxFiles={MAX_IMAGES_UPLOAD}
+        />
+        <DropzoneField
+          name="csv"
+          label="CSV"
+          inputLabel="Add csv"
+          type="csv"
+          sx={{ mt: 2 }}
+        />
 
-          {/* -------- button -------- */}
-          <Box mt={1}>
-            <Button type="submit" variant="contained">
-              Submit
-            </Button>
-          </Box>
-        </form>
-      </FormProvider>
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <a href="https://www.linkedin.com/in/tiavina-michael-ralainirina/">
-          <Typography>By Tiavina Michael Ralainirina</Typography>
-        </a>
-      </Box>
-    </Box>
+        {/* -------- button -------- */}
+        <Box mt={1}>
+          <Button type="submit" variant="contained">
+            Submit
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 
