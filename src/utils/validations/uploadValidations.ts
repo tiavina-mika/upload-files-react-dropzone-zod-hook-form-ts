@@ -13,23 +13,25 @@ export const uploadSchema = z.object({
   image: z
     .any()
     // file size validation
-    .refine((files: File[]) => {
+    .refine((files: File[]): boolean => {
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
     // file types validation
     .refine((files: File[]): boolean => {
       if (!files.length) return true;
       return hasAcceptedFileTypes(files, ACCEPTED_IMAGE_TYPES);
-    }, ACCEPTED_IMAGE_TYPES.map((type: string) => "." + type) + " are accepted")
+    }, ACCEPTED_IMAGE_TYPES.map((type: string): string => "." + type) + " are accepted")
     // get only one file from list
-    .transform((files: File[]) => {
-      if (!files || files?.length === 0) return;
-      return files[0];
-    }),
+    .transform(
+      (files: File[]): File => {
+        if (!files || files?.length === 0) return;
+        return files[0];
+      }
+    ),
   images: z
     .any()
     // file size validation
-    .refine((files: File[]) => {
+    .refine((files: File[]): boolean => {
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
     // file types validation
@@ -42,12 +44,12 @@ export const uploadSchema = z.object({
     .any()
     .nullable()
     // file count validation
-    .refine((files: File[]) => {
+    .refine((files: File[]): boolean => {
       if (!files) return true;
       return files.length === 0 || files.length === MAX_CSV_UPLOAD;
     }, "Upload only one csv file")
     // file size validation
-    .refine((files: File[]) => {
+    .refine((files: File[]): boolean => {
       if (!files) return true;
       return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
     }, "Max file required is " + MAX_IMAGE_SIZE + "MB")
@@ -57,8 +59,10 @@ export const uploadSchema = z.object({
       return hasAcceptedFileTypes(files, ACCEPTED_CSV_TYPES);
     }, ACCEPTED_CSV_TYPES.map((type: string) => "." + type) + " are accepted")
     // get only one file from list
-    .transform((files: File[]) => {
-      if (!files || files?.length === 0) return;
-      return files[0];
-    })
+    .transform(
+      (files: File[]): File => {
+        if (!files || files?.length === 0) return;
+        return files[0];
+      }
+    )
 });
