@@ -16,7 +16,8 @@ const App = () => {
       <Stack spacing={2.4}>
         <div>
           <Typography variant="h5">
-            Upload files with React Hook Form, Zod, TypeScript and Material UI
+            Upload files with React Hook Form, React Dropzone, Zod, TypeScript
+            and Material UI
           </Typography>
         </div>
         <Form />
