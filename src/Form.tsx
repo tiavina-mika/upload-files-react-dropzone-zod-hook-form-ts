@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
 import { getFileFromUrl } from "./utils/fileUtils";
@@ -9,6 +9,7 @@ import {
   MAX_IMAGE_UPLOAD,
   uploadSchema
 } from "./utils/validations/uploadValidations";
+import { IUploadInput } from "./types/upload";
 
 const imageUrls = [
   // "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-superJumbo.jpg?quality=75&auto=webp",
@@ -23,8 +24,8 @@ const multipleImagesUrls = [
 /**
  * get form initial values
  */
-const getInitialValues = async () => {
-  const images = await Promise.all(
+const getInitialValues = async (): Promise<IUploadInput> => {
+  const singleImage = await Promise.all(
     imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
@@ -33,13 +34,14 @@ const getInitialValues = async () => {
   );
 
   return {
-    image: images,
+    image: singleImage, // the image should be an array format
+    // image: singleImage, // the image should be an array format
     images: multipleImages
   };
 };
 
 const Form = () => {
-  const form = useForm({
+  const form = useForm<IUploadInput>({
     mode: "onChange",
     resolver: zodResolver(uploadSchema)
   });
@@ -49,6 +51,7 @@ const Form = () => {
     // async form default values
     const init = async () => {
       const defaultValues = await getInitialValues();
+      console.log(defaultValues);
       form.reset(defaultValues);
     };
     init();
@@ -56,7 +59,8 @@ const Form = () => {
 
   const { handleSubmit } = form;
 
-  const onSubmit = (values) => console.log("values", values);
+  const onSubmit: SubmitHandler<IUploadInput> = (values) =>
+    console.log("values", values);
 
   return (
     <FormProvider {...form}>
