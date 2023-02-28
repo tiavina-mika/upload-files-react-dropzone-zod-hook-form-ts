@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import DropzoneField from "./components/DropzoneField";
 import { useEffect } from "react";
@@ -65,33 +65,35 @@ const Form = () => {
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* -------- inputs -------- */}
-        <DropzoneField
-          name="image"
-          label="Image"
-          inputLabel="Add image"
-          maxFiles={MAX_IMAGE_UPLOAD}
-        />
-        <DropzoneField
-          name="images"
-          label="Images"
-          inputLabel="Add images"
-          maxFiles={MAX_IMAGES_UPLOAD}
-        />
-        <DropzoneField
-          name="csv"
-          label="CSV"
-          inputLabel="Add csv"
-          type="csv"
-          sx={{ mt: 2 }}
-        />
+        <Stack spacing={2.6}>
+          {/* -------- inputs -------- */}
+          <DropzoneField
+            name="image"
+            label="Image"
+            inputLabel="Add image"
+            maxFiles={MAX_IMAGE_UPLOAD}
+          />
+          <DropzoneField
+            name="images"
+            label="Images"
+            inputLabel="Add images"
+            maxFiles={MAX_IMAGES_UPLOAD}
+          />
+          <DropzoneField
+            name="csv"
+            label="CSV"
+            inputLabel="Add csv"
+            type="csv"
+            sx={{ mt: 2 }}
+          />
 
-        {/* -------- button -------- */}
-        <Box mt={1}>
-          <Button type="submit" variant="contained">
-            Submit
-          </Button>
-        </Box>
+          {/* -------- button -------- */}
+          <Box mt={1}>
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          </Box>
+        </Stack>
       </form>
     </FormProvider>
   );
