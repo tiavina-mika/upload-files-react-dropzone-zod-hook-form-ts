@@ -25,7 +25,7 @@ const multipleImagesUrls = [
  * get form initial values
  */
 const getInitialValues = async (): Promise<IUploadInput> => {
-  const singleImage = await Promise.all(
+  const singleImages = await Promise.all(
     imageUrls.map((url: string) => getFileFromUrl(url))
   );
 
@@ -34,7 +34,7 @@ const getInitialValues = async (): Promise<IUploadInput> => {
   );
 
   return {
-    image: singleImage, // the image should be an array format
+    image: singleImages, // the image should be an array format
     // image: singleImage, // the image should be an array format
     images: multipleImages
   };
